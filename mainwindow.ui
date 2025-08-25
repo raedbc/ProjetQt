@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="client">
      <widget class="QPushButton" name="bt_modifier_client">
@@ -285,16 +285,6 @@
       <item>
        <property name="text">
         <string>ROLE</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>SEXE</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>ADRESSE</string>
        </property>
       </item>
      </widget>
@@ -793,7 +783,7 @@
         <string>Adresse</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="prix_commande_6">
+      <widget class="QLineEdit" name="adresse_client">
        <property name="geometry">
         <rect>
          <x>260</x>
@@ -1183,7 +1173,7 @@
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">    color: rgb(255, 255, 255);
+       <string notr="true">    color: rgb(0,0,0);
     background-color: rgb(255, 165, 0); /* Changement de couleur en orange */
     font-size: 20px;
     line-height: 1.5;

@@ -1,6 +1,7 @@
 #include "commandes.h"
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <qDebug>
 commandes::commandes()
 {
     this->id_commande = 0;
@@ -58,7 +59,7 @@ bool commandes::modifier()
 {
     QSqlQuery query;
     query.prepare("UPDATE COMMANDES SET id_client=:id_client,"
-                  "id_livreur=:id_livreur,date_commande=:date_commane,"
+                  "id_livreur=:id_livreur,date_commande=:date_commande,"
                   "statut=:statut,nom_produit=:nom_produit,type_produit=:type_produit,"
                   "prix_totale=:prix_totale WHERE ID_COMMANDE=:id_commande");
 
@@ -69,7 +70,8 @@ bool commandes::modifier()
     query.bindValue(":nom_produit",nom_produit);
     query.bindValue(":type_produit",type_produit);
     query.bindValue(":prix_totale",prix_totale);
-    query.bindValue(":id_commande",prix_totale);
+    query.bindValue(":id_commande",id_commande);
+
 
     return query.exec();
 
@@ -140,4 +142,21 @@ list.append(id_livreur);
 return list;
 
 
+}
+
+
+QMap<QString, int> commandes::statistiquesParStatut() {
+    QMap<QString, int> StatutStats;
+
+    QSqlQuery query;
+    query.prepare("SELECT STATUT, COUNT(*) as count FROM COMMANDES GROUP BY STATUT");
+    if (query.exec()) {
+        while (query.next()) {
+            QString statut = query.value(0).toString();//En attente
+            int count = query.value(1).toInt();//2
+            StatutStats[statut] = count;
+        }
+    }
+
+    return StatutStats;
 }

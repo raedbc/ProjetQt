@@ -40,6 +40,7 @@ public:
 
     QList<int> ListeIdLivreur();
     QList<int> ListeIdClient();
+    QMap<QString, int> statistiquesParStatut() ;
 
 
 private:

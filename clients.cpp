@@ -50,8 +50,8 @@ clients::clients(QString nom,QString prenom,QString email,QString telephone,QStr
 bool clients::ajouter()
 {
 QSqlQuery query;
-query.prepare("INSERT INTO CLIENTS (nom,prenom,email,telephone,adresse,date_naissance,gourvernorat,delegation,role,sexe)"
-              " VALUES (:nom,:prenom,:email,:telephone,:adresse,:date_naissance,:gourvernorat,:delegation,:role,:sexe)");
+query.prepare("INSERT INTO CLIENTS (nom,prenom,email,telephone,adresse,date_de_naissance,gouvernorat,delegation,role,sexe)"
+              " VALUES (:nom,:prenom,:email,:telephone,:adresse,:date_naissance,:gouvernorat,:delegation,:role,:sexe)");
 
 query.bindValue(":nom",nom);
 query.bindValue(":prenom",prenom);
@@ -78,7 +78,7 @@ bool clients::modifier()
 {
 QSqlQuery query;
 query.prepare("UPDATE CLIENTS SET nom=:nom ,prenom=:prenom,email=:email,telephone=:telephone,adresse=:adresse,"
-              "date_naissance=:date_naissance,gouvernorat=:gouvernorat,delegation=:delegation,role=:role,sexe=:sexe"
+              "date_de_naissance=:date_naissance,gouvernorat=:gouvernorat,delegation=:delegation,role=:role,sexe=:sexe"
               "   WHERE ID_CLIENT=:id_client");
 
 query.bindValue(":nom",nom);
@@ -143,3 +143,18 @@ model->setQuery("SELECT * FROM CLIENTS  ORDER BY "+column+" "+ordre);// ORDER BY
 return model;
 }
 
+QMap<QString, int> clients::statistiquesParSexe() {
+    QMap<QString, int> SexeStats;
+
+    QSqlQuery query;
+    query.prepare("SELECT Sexe, COUNT(*) as count FROM CLIENTS GROUP BY Sexe");
+    if (query.exec()) {
+        while (query.next()) {
+            QString Sexe = query.value(0).toString();//Homme
+            int count = query.value(1).toInt();//2
+            SexeStats[Sexe] = count;
+        }
+    }
+
+    return SexeStats;
+}
