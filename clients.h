@@ -76,6 +76,10 @@ QSqlQueryModel* chercher(QString column,QString text);
 QSqlQueryModel* tri(QString column,QString ordre);
 QMap<QString, int> statistiquesParSexe() ;
 
+QString ChercherClientById(int id_client);
+
+QString ChercherLivreurById(int id_livreur);
+
  private:
 int id_client;
 QString nom,prenom,email,telephone,adresse,gourvernorat,delegation,sexe,role;

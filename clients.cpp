@@ -158,3 +158,53 @@ QMap<QString, int> clients::statistiquesParSexe() {
 
     return SexeStats;
 }
+
+QString clients::ChercherClientById(int id_client)
+{
+    QString message = "";
+    QSqlQuery query;
+    query.prepare("SELECT * FROM CLIENTS WHERE ID_CLIENT=:id_client");
+    query.bindValue(":id_client", id_client);
+
+    if (query.exec() && query.next())
+    {
+        QString nom = query.value("NOM").toString();
+        QString prenom = query.value("PRENOM").toString();
+        QString telephone = query.value("TELEPHONE").toString();
+        QString gouvernorat = query.value("GOUVERNORAT").toString();
+        QString delegation = query.value("DELEGATION").toString();
+        QString adresse = query.value("ADRESSE").toString();
+
+        message = QString("Client ID: %1\nNom: %2\nPrenom: %3\nTelephone: %4\nGouvernorat: %5\nDelegation: %6\nAdresse: %7")
+            .arg(id_client)
+            .arg(nom)
+            .arg(prenom)
+            .arg(telephone)
+            .arg(gouvernorat)
+            .arg(delegation)
+            .arg(adresse);
+    }
+
+    return message;
+}
+
+QString clients::ChercherLivreurById(int id_livreur)
+{
+    QString message = "";
+    QSqlQuery query;
+    query.prepare("SELECT NOM, PRENOM FROM LIVREURS WHERE ID_LIVREUR=:id_livreur");
+    query.bindValue(":id_livreur", id_livreur);
+
+    if (query.exec() && query.next())
+    {
+        QString nom = query.value("NOM").toString();
+        QString prenom = query.value("PRENOM").toString();
+
+        message = QString("Livreur ID: %1\nNom: %2\nPrenom: %3")
+            .arg(id_livreur)
+            .arg(nom)
+            .arg(prenom);
+    }
+
+    return message;
+}

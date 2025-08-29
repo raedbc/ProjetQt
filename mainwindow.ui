@@ -804,6 +804,35 @@
        </property>
       </widget>
      </widget>
+     <widget class="QPushButton" name="bt_historique">
+      <property name="geometry">
+       <rect>
+        <x>1400</x>
+        <y>800</y>
+        <width>141</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 165, 0); /* Changement de couleur en orange */
+    font-size: 20px;
+    line-height: 1.5;
+    width: 200px;
+    height: 40px;
+    opacity: 0.65;
+    text-align: center;
+    border-style: solid;
+    border-width: 2px; /* vous pouvez ajuster l'épaisseur de la bordure */
+    border-color: black; /* couleur de la bordure */
+    border-radius: 10px; /* ajustez cette valeur pour arrondir plus ou moins */
+}</string>
+      </property>
+      <property name="text">
+       <string>Historique</string>
+      </property>
+     </widget>
      <zorder>label_26</zorder>
      <zorder>bt_supprimer_client</zorder>
      <zorder>bt_stat_client</zorder>
@@ -821,6 +850,7 @@
      <zorder>groupBox_3</zorder>
      <zorder>bt_modifier_client</zorder>
      <zorder>label_25</zorder>
+     <zorder>bt_historique</zorder>
     </widget>
     <widget class="QWidget" name="commande">
      <widget class="QLabel" name="label">
@@ -1514,6 +1544,35 @@
     border-color: black; /* couleur de la bordure */
     border-radius: 10px; /* ajustez cette valeur pour arrondir plus ou moins */
 </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="bt_qrCode">
+      <property name="geometry">
+       <rect>
+        <x>1400</x>
+        <y>800</y>
+        <width>141</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 165, 0); /* Changement de couleur en orange */
+    font-size: 20px;
+    line-height: 1.5;
+    width: 200px;
+    height: 40px;
+    opacity: 0.65;
+    text-align: center;
+    border-style: solid;
+    border-width: 2px; /* vous pouvez ajuster l'épaisseur de la bordure */
+    border-color: black; /* couleur de la bordure */
+    border-radius: 10px; /* ajustez cette valeur pour arrondir plus ou moins */
+}</string>
+      </property>
+      <property name="text">
+       <string>QrCode</string>
       </property>
      </widget>
     </widget>

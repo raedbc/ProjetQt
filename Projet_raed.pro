@@ -20,13 +20,15 @@ SOURCES += \
     commandes.cpp \
     connexion.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    Qrcode.cpp
 
 HEADERS += \
     clients.h \
     commandes.h \
     connexion.h \
-    mainwindow.h
+    mainwindow.h \
+    Qrcode.hpp
 
 FORMS += \
     mainwindow.ui

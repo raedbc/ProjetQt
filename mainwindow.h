@@ -61,6 +61,11 @@ private slots:
 
     void on_bt_pdf_commande_clicked();
 
+    void on_bt_historique_clicked();
+    void addToHistory(const QString &action, const QString &id);
+
+    void on_bt_qrCode_clicked();
+
 private:
     Ui::MainWindow *ui;
     clients c;

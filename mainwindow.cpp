@@ -11,6 +11,9 @@
 #include <QPrinter>
 #include <QFileDialog>
 #include <QTextDocument>
+#include "Qrcode.hpp"
+
+#include <QDebug>
 using namespace QtCharts;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -186,6 +189,10 @@ ui->gouvernorat_client->clear();
 ui->naissance_client->clear();
 ui->sexe_client->setCurrentIndex(0);
 ui->id_client->clear();
+
+
+addToHistory("Mise à jour du client ",QString::number(id_client));
+
 }
 else
 {
@@ -224,6 +231,9 @@ ui->sexe_client->setCurrentIndex(0);
 ui->id_client->clear();
 
 remplir_comboBox_id_client();
+
+addToHistory("Suppresion du client ",QString::number(id_client));
+
 }
 else
 {
@@ -702,3 +712,120 @@ void MainWindow::on_bt_pdf_commande_clicked()
         doc.print(&printer);//fileName
 
     }
+
+void MainWindow::on_bt_historique_clicked()
+{
+    QString filePath = "/Users/Msi/OneDrive/Documents/Projet_raed/historique.txt";
+    QFile file(filePath);
+
+    // Vérifier si le fichier peut être ouvert en mode lecture
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir le fichier d'historique.");
+        return;
+    }
+
+    // Lire tout le contenu du fichier historique
+    QTextStream in(&file);
+    QString historyContent = in.readAll();
+
+    // Afficher le contenu dans une boîte de dialogue ou une zone de texte
+    QMessageBox::information(this, "Historique des actions", historyContent);
+
+    // Fermer le fichier
+    file.close();
+}
+
+void MainWindow::addToHistory(const QString &action, const QString &id)
+{
+    // Chemin du fichier historique
+    QString filePath = "/Users/Msi/OneDrive/Documents/Projet_raed/historique.txt";
+    QFile file(filePath);
+
+    // Ouvrir le fichier en mode Ecrire
+    if (!file.open(QIODevice::Append | QIODevice::Text)) {
+        return;
+    }
+
+    // Créer un flux texte pour écrire dans le fichier
+    QTextStream out(&file);
+
+    // Obtenir la date et l'heure actuelles
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+
+    // Écrire l'action dans le fichier historique avec la date et l'heure
+    out << currentDateTime.toString("yyyy-MM-dd hh:mm:ss") << " - " << action;
+    if (!id.isEmpty()) {
+        out << " : " << id;
+    }
+    out << "\n";
+
+    // Fermer le fichier
+    file.close();
+}
+
+void MainWindow::on_bt_qrCode_clicked()
+{
+//récupération d'apres ui !
+    int id_client = ui->id_client_commande->currentText().toInt();
+    int id_livreur = ui->id_livreur_commande->currentText().toInt();
+    QDate date_commande = ui->date_commande->date();
+    QString statut = ui->statut_commande->currentText();
+    QString nom_produit = ui->nom_commande->text();
+    QString type_produit = ui->type_commande->text();
+    int prix = ui->prix_commande->text().toInt();
+    int id_commande = ui->id_commande->text().toInt();
+
+    QString messageClient = c.ChercherClientById(id_client);
+    QString messageLivreur = c.ChercherLivreurById(id_livreur);
+
+    // Construct the final message
+    QString text = QString("ID Commande: %1\n"
+                           "Information Client:\n%2\n"
+                           "Information Livreur:\n%3\n"
+                           "Date: %4\n"
+                           "Statut: %5\n"
+                           "Produit: %6 (%7)\n"
+                           "Prix: %8")
+        .arg(id_commande)
+        .arg(messageClient)
+        .arg(messageLivreur)
+        .arg(date_commande.toString("yyyy-MM-dd"))
+        .arg(statut)
+        .arg(nom_produit)
+        .arg(type_produit)
+        .arg(prix);
+
+    // Use 'text' as needed
+    using namespace qrcodegen;
+   QrCode qr = QrCode::encodeText(text.toUtf8().data(), QrCode::Ecc::MEDIUM);
+
+                    qint32 sz = qr.getSize();
+                    QImage im(sz, sz, QImage::Format_RGB32);
+                    QRgb black = qRgb(0, 0, 0);
+                    QRgb white = qRgb(255, 255, 255);
+
+                    for (int y = 0; y < sz; y++) {
+                        for (int x = 0; x < sz; x++) {
+                            im.setPixel(x, y, qr.getModule(x, y) ? black : white);
+                        }
+                    }
+
+
+                    // Create a QLabel to display the QR code
+                    QLabel *qrCodeLabel = new QLabel();
+                    qrCodeLabel->setPixmap(QPixmap::fromImage(im.scaled(200, 200, Qt::KeepAspectRatio, Qt::FastTransformation), Qt::MonoOnly));
+
+                    // Create the dialog
+                    QDialog *chartDialog = new QDialog(this);
+                    chartDialog->setWindowTitle("QrCode Du Commande");
+                    chartDialog->setFixedSize(480, 240);
+
+                    // Create a layout and add the QLabel
+                    QVBoxLayout *layout = new QVBoxLayout();
+                    layout->addWidget(qrCodeLabel); // Use the QLabel here
+                    chartDialog->setLayout(layout);
+
+                    // Execute the dialog
+                    chartDialog->exec();
+
+}
